@@ -28,3 +28,8 @@
 ```shell
 java -jar build/libs/weapons-<version>.jar
 ```
+
+  + On macOS
+  ```shell
+  java -XstartOnFirstThread -jar build/libs/weapons-<version>.jar
+  ```
