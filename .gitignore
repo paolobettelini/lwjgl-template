@@ -36,3 +36,6 @@ gradle-app.setting
 .gradletasknamecache
 
 bin/
+.settings/
+.classpath
+.project
