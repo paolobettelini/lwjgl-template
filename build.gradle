@@ -13,7 +13,6 @@ jar {
     }
 }
 
-
 repositories {
     mavenLocal()
     maven {
@@ -39,7 +38,7 @@ dependencies {
 group = 'ch.bettelini'
 version = '1.0-SNAPSHOT'
 description = 'Weapons'
-java.sourceCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = '1.16'
 
 tasks.withType(JavaCompile) {
     options.encoding = 'UTF-8'
