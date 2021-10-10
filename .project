@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <projectDescription>
-	<name>lwjgl3-tests</name>
+	<name>weapons</name>
 	<comment>Project weapons created by Buildship.</comment>
 	<projects>
 	</projects>
@@ -22,7 +22,7 @@
 	</natures>
 	<filteredResources>
 		<filter>
-			<id>1633886538620</id>
+			<id>0</id>
 			<name></name>
 			<type>30</type>
 			<matcher>
