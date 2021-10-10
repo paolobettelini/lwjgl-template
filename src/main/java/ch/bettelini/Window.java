@@ -47,7 +47,7 @@ public abstract class Window {
     
     private static boolean INIT = false;
 
-	private long window;
+    private long window;
     private int width;
     private int height;
     private String title;
@@ -78,13 +78,13 @@ public abstract class Window {
     protected abstract void draw();
 
     private void init() {
-		// Setup an error callback. The default implementation
-		// will print the error message in System.err.
-		GLFWErrorCallback.createPrint(System.err).set();
+        // Setup an error callback. The default implementation
+        // will print the error message in System.err.
+        GLFWErrorCallback.createPrint(System.err).set();
 
-		// Initialize GLFW. Most GLFW functions will not work before doing this.
-		if (!glfwInit()) {
-			throw new IllegalStateException("Unable to initialize GLFW");
+        // Initialize GLFW. Most GLFW functions will not work before doing this.
+        if (!glfwInit()) {
+            throw new IllegalStateException("Unable to initialize GLFW");
         }
 
         // Configure GLFW
@@ -138,33 +138,33 @@ public abstract class Window {
         glfwMakeContextCurrent(window);
         glfwSwapInterval(1);
         glfwShowWindow(window);
-	}
+    }
 
     private void loop() {
-		// LWJGL's interoperation with GLFW's
-		GL.createCapabilities();
-		
-		glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
-		
-		while (!glfwWindowShouldClose(window)) {
-			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-			glLoadIdentity();
-			
-			draw();
+        // LWJGL's interoperation with GLFW's
+        GL.createCapabilities();
+        
+        glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+        
+        while (!glfwWindowShouldClose(window)) {
+            glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+            glLoadIdentity();
+            
+            draw();
 
-			glfwSwapBuffers(window);
-			glfwPollEvents();
-		}
-	}
+            glfwSwapBuffers(window);
+            glfwPollEvents();
+        }
+    }
 
     private void release() {
         // Free the window callbacks and destroy the window
-		glfwFreeCallbacks(window);
-		glfwDestroyWindow(window);
+        glfwFreeCallbacks(window);
+        glfwDestroyWindow(window);
 
-		// Terminate GLFW and free the error callback
-		glfwTerminate();
-		glfwSetErrorCallback(null).free();
+        // Terminate GLFW and free the error callback
+        glfwTerminate();
+        glfwSetErrorCallback(null).free();
     }
 
     public int getWidth() {
