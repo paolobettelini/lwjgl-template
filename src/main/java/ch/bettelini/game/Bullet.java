@@ -2,14 +2,15 @@ package ch.bettelini.game;
 
 public class Bullet {
     
-    float posX, posY, dirX, dirY, velocity;
+    private float posX, posY, xIncrement, yIncrement, maxDist, stepLength;
+    private int steps = 0;
 
-    public Bullet(float posX, float posY, float dirX, float dirY, float velocity) {
+    public Bullet(float posX, float posY, float dirX, float dirY, float velocity, float maxDist) {
         this.posX = posX;
         this.posY = posY;
-        this.dirX = dirX;
-        this.dirY = dirY;
-        this.velocity = velocity;
+        this.xIncrement = dirX * velocity;
+        this.yIncrement = dirY * velocity;
+        this.stepLength = (float) Math.sqrt(xIncrement * xIncrement + yIncrement * yIncrement);
     }
 
     public float getX() {
@@ -20,8 +21,11 @@ public class Bullet {
         return posY;
     }
 
-    public void step() {
+    public boolean step() {
+        posX += xIncrement;
+        posY += yIncrement;
 
+        return ++steps * stepLength > maxDist;
     }
 
 }
