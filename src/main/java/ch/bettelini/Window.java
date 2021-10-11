@@ -20,6 +20,7 @@ import static org.lwjgl.glfw.GLFW.glfwSetCursorPosCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetErrorCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetKeyCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetMouseButtonCallback;
+import static org.lwjgl.glfw.GLFW.glfwSetWindowSizeCallback;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowPos;
 import static org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose;
 import static org.lwjgl.glfw.GLFW.glfwShowWindow;
@@ -36,8 +37,6 @@ import static org.lwjgl.opengl.GL11.glLoadIdentity;
 import static org.lwjgl.system.MemoryStack.stackPush;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
-import java.nio.IntBuffer;
-
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
@@ -49,17 +48,21 @@ public abstract class Window {
 
     private long window;
 
+    private int height;
+    private int width;
+
     protected Window(String title, int width, int height)
             throws IllegalStateException {
         if (INIT) {
             throw new IllegalStateException("A window has already been initialized");
         }
 
+        this.width = width;
+        this.height = height;
+
         INIT = true;
         
-        init(title, width, height);
-        loop();
-        release();
+        init(title);
     }
 
     protected abstract void onMouseClick(int button, int action);
@@ -70,7 +73,12 @@ public abstract class Window {
 
     protected abstract void draw();
 
-    private void init(String title, int width, int height) {
+    public void start() {
+        loop();
+        release();
+    }
+
+    private void init(String title) {
         // Setup an error callback. The default implementation
         // will print the error message in System.err.
         GLFWErrorCallback.createPrint(System.err).set();
@@ -83,7 +91,7 @@ public abstract class Window {
         // Configure GLFW
         glfwDefaultWindowHints(); // optional, the current window hints are already the default
         glfwWindowHint(GLFW_VISIBLE, GLFW_FALSE); // the window will stay hidden after creation
-        glfwWindowHint(GLFW_RESIZABLE, GLFW_TRUE); // the window will be resizable
+        glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE); // the window will be unresizable
         
         // Create the window
         window = glfwCreateWindow(width, height, title, NULL, NULL);
@@ -112,21 +120,19 @@ public abstract class Window {
             onMouseClick(button, action);
         });
 
-        // Get the thread stack and push a new frame
-        try (MemoryStack stack = stackPush()) {
-            IntBuffer pWidth = stack.mallocInt(1); // int*
-            IntBuffer pHeight = stack.mallocInt(1); // int*
+        // Resize Listener
+        //glfwSetWindowSizeCallback(window, (window, width, height) -> {
+        //    this.width = width;
+        //    this.height = height;
+        //});
+        
+        GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
 
-            glfwGetWindowSize(window, pWidth, pHeight);
-
-            GLFWVidMode vidmode = glfwGetVideoMode(glfwGetPrimaryMonitor());
-
-            glfwSetWindowPos(
-                window,
-                (vidmode.width() - pWidth.get(0)) / 2,
-                (vidmode.height() - pHeight.get(0)) / 2
-            );
-        }
+        glfwSetWindowPos(
+            window,
+            (vidmode.width() - width) >> 1,
+            (vidmode.height() - height) >> 1
+        );
 
         glfwMakeContextCurrent(window);
         glfwSwapInterval(1);
@@ -137,7 +143,7 @@ public abstract class Window {
         // LWJGL's interoperation with GLFW's
         GL.createCapabilities();
         
-        glClearColor(1.0f, 0.0f, 0.0f, 0.0f);
+        glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
         
         while (!glfwWindowShouldClose(window)) {
             glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -148,7 +154,7 @@ public abstract class Window {
             glfwSwapBuffers(window);
             glfwPollEvents();
         }
-    }   
+    }
 
     private void release() {
         // Free the window callbacks and destroy the window
@@ -161,27 +167,11 @@ public abstract class Window {
     }
 
     public int getWidth() {
-        return -1;
+        return width;
     }
 
     public int getHeight() {
-        return -1;
-    }
-
-    public String getTitle() {
-        return null;
-    }
-
-    public void setWidth(int width) {
-
-    }
-
-    public void setHeight(int height) {
-        
-    }
-
-    public void setTitle(String title) {
-    
+        return height;
     }
 
     public long getWindow() {

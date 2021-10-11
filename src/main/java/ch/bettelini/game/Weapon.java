@@ -5,12 +5,11 @@ package ch.bettelini.game;
  * @author alesa
  */
 public abstract class Weapon {
-    
 
     private int ammo = 0;
-    private final int AMMO_CAPACITY =5 ;
+    private final int AMMO_CAPACITY = 5;
 
-    public int getAMMO_CAPACITY() {
+    public int getAmmoCapacity() {
         return AMMO_CAPACITY;
     }
 
@@ -22,7 +21,6 @@ public abstract class Weapon {
     protected abstract void makeOutOfAmmoNoise();
     protected abstract void makeReloadNoise();
     
-    
     public final void shoot(){
         if (getAmmo() != 0) {
             ammo -=1;
@@ -33,37 +31,17 @@ public abstract class Weapon {
     }
     
     
-    public final void reload(){
+    public final void reload() {
         setAmmo(AMMO_CAPACITY);
         makeReloadNoise();
     }
-
     
-    public int getAmmoCapacity(){
-        return AMMO_CAPACITY;
-    }
-    
-    public int getAmmo(){
+    public int getAmmo() {
         return this.ammo;
     }
 
     public void setAmmo(int ammo) {
         this.ammo = ammo;
     }
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-
-
-    
-
-    
     
 }
