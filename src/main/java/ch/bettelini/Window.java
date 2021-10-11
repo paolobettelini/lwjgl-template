@@ -44,13 +44,10 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.system.MemoryStack;
 
 public abstract class Window {
-    
+
     private static boolean INIT = false;
 
     private long window;
-    private int width;
-    private int height;
-    private String title;
 
     protected Window(String title, int width, int height)
             throws IllegalStateException {
@@ -59,12 +56,8 @@ public abstract class Window {
         }
 
         INIT = true;
-
-        this.title = title;
-        this.width = width;
-        this.height = height;
         
-        init();
+        init(title, width, height);
         loop();
         release();
     }
@@ -77,7 +70,7 @@ public abstract class Window {
 
     protected abstract void draw();
 
-    private void init() {
+    private void init(String title, int width, int height) {
         // Setup an error callback. The default implementation
         // will print the error message in System.err.
         GLFWErrorCallback.createPrint(System.err).set();
@@ -155,7 +148,7 @@ public abstract class Window {
             glfwSwapBuffers(window);
             glfwPollEvents();
         }
-    }
+    }   
 
     private void release() {
         // Free the window callbacks and destroy the window
@@ -168,15 +161,27 @@ public abstract class Window {
     }
 
     public int getWidth() {
-        return width;
+        return -1;
     }
 
     public int getHeight() {
-        return height;
+        return -1;
     }
 
     public String getTitle() {
-        return title;
+        return null;
+    }
+
+    public void setWidth(int width) {
+
+    }
+
+    public void setHeight(int height) {
+        
+    }
+
+    public void setTitle(String title) {
+    
     }
 
     public long getWindow() {
