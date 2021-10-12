@@ -26,7 +26,7 @@
 
 3. Run program
 ```shell
-java -jar build/libs/weapons-<version>.jar
+java -jar weapons-game/build/libs/weapons-<version>.jar
 ```
 
   + On macOS
