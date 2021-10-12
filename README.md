@@ -31,5 +31,5 @@ java -jar weapons-game/build/libs/weapons-<version>.jar
 
   + On macOS
   ```shell
-  java -XstartOnFirstThread -jar build/libs/weapons-<version>.jar
+  java -XstartOnFirstThread -jar weapons-game/build/libs/weapons-<version>.jar
   ```
