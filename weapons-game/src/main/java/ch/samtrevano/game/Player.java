@@ -1,4 +1,4 @@
-package ch.bettelini.game;
+package ch.samtrevano.game;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -7,36 +7,57 @@ public class Player {
     
     private List<Weapon> weapons;
     private Weapon currentWeapon;
-
-    public Player() {
-        this.weapons = new LinkedList<>();
-    }
-    
-    public void changeWeapon(int index) {
-        currentWeapon = weapons.get(index);
-    }
-    
-    public void addWeapon(Weapon weapon) {
-        weapons.add(weapon);
-    }
-    
-    public void shoot() {
-        currentWeapon.shoot();
-    }
-     
-    public void reloadWeapon(){
-        currentWeapon.reload();
-    }
-
-    // roba in più
+    private int currentWeaponIndex;
 
     private float posX;
     private float posY;
     private float rotation;
     private int level;
 
+    public Player() {
+        this.weapons = new LinkedList<>();
+        this.currentWeaponIndex = 0;
+        this.level = 0;
+    }
+    
+    public void changeWeapon() {
+        if (++currentWeaponIndex >= weapons.size()) {
+            currentWeaponIndex = 0;
+        }
+
+        currentWeapon = weapons.get(currentWeaponIndex);
+    }
+
+    public void addWeapon(Weapon weapon) {
+        weapons.add(weapon);
+    }
+
+    public Weapon getCurrentWeapon() {
+        return currentWeapon;
+    }
+    
+    public void shoot() {
+        if (currentWeapon == null) {
+            return;
+        }
+
+        currentWeapon.shoot();
+    }
+     
+    public void reloadWeapon(){
+        if (weapons == null) {
+            return;
+        }
+
+        currentWeapon.reload();
+    }
+
     public int getLevel() {
         return level;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
     }
 
     public void moveUp(float amount) {
@@ -63,11 +84,11 @@ public class Player {
         return rotation;
     }
 
-    public float getPosX() {
+    public float getX() {
         return posX;
     }
 
-    public float getPosY() {
+    public float getY() {
         return posY;
     }
 

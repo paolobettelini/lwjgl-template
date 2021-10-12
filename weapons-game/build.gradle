@@ -4,12 +4,12 @@ plugins {
 }
 
 application {
-    mainClass = 'ch.bettelini.Main'
+    mainClass = 'ch.samtrevano.Main'
 }
 
 jar {
     manifest {
-        attributes 'Main-Class': 'ch.bettelini.Main'
+        attributes 'Main-Class': 'ch.samtrevano.Main'
     }
     from {
         duplicatesStrategy DuplicatesStrategy.EXCLUDE

@@ -1,4 +1,6 @@
-package ch.bettelini;
+package ch.samtrevano;
+
+import ch.samtrevano.game.Game;
 
 public class Main {
 

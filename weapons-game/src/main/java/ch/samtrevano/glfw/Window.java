@@ -1,4 +1,4 @@
-package ch.bettelini;
+package ch.samtrevano.glfw;
 
 import static org.lwjgl.glfw.Callbacks.glfwFreeCallbacks;
 import static org.lwjgl.glfw.GLFW.GLFW_FALSE;
@@ -40,7 +40,6 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.glfw.GLFWVidMode;
 import org.lwjgl.opengl.GL;
-import org.lwjgl.system.MemoryStack;
 
 public abstract class Window {
 
@@ -50,6 +49,9 @@ public abstract class Window {
 
     private int height;
     private int width;
+
+    private int mouseX;
+    private int mouseY;
 
     protected Window(String title, int width, int height)
             throws IllegalStateException {
@@ -69,7 +71,7 @@ public abstract class Window {
 
     protected abstract void onKeyDown(int key);
 
-    protected abstract void onMouseMove(double xpos, double ypos);
+    protected abstract void onMouseMove(int xpos, int ypos);
 
     protected abstract void draw();
 
@@ -101,8 +103,8 @@ public abstract class Window {
         }
 
         // Mouse Movement Listener
-        glfwSetCursorPosCallback(window, (window, xpos, ypos) -> {
-            onMouseMove(xpos, ypos);
+        glfwSetCursorPosCallback(window, (window, x, y) -> {
+            onMouseMove(mouseX = (int) x, mouseY = (int) y);
         });
         
         // Key listener
@@ -176,6 +178,14 @@ public abstract class Window {
 
     public long getWindow() {
         return window;
+    }
+
+    public int getMouseX() {
+        return mouseX;
+    }
+
+    public int getMouseY() {
+        return mouseY;
     }
     
 }
