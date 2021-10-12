@@ -30,18 +30,22 @@ public class Player {
 
     public void addWeapon(Weapon weapon) {
         weapons.add(weapon);
+
+        if (currentWeapon == null) {
+            currentWeapon = weapon;
+        }
     }
 
     public Weapon getCurrentWeapon() {
         return currentWeapon;
     }
     
-    public void shoot() {
+    public boolean shoot() {
         if (currentWeapon == null) {
-            return;
+            return false;
         }
 
-        currentWeapon.shoot();
+        return currentWeapon.shoot();
     }
      
     public void reloadWeapon(){

@@ -45,7 +45,7 @@ dependencies {
     implementation "org.lwjgl:lwjgl-stb:${project.lwjgl_version}"
 }
 
-group = 'ch.bettelini'
+group = 'ch.samtrevano'
 version = '1.0-SNAPSHOT'
 description = 'Weapons'
 sourceCompatibility = '1.16'

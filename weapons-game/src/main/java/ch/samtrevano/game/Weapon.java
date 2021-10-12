@@ -1,36 +1,36 @@
 package ch.samtrevano.game;
 
-/**
- * Weapon class - represents a weapon
- * 
- * @author Paolo Bettelini
- * @author Alessandro Aloise
- * @version 12.10.2021
- */
 public abstract class Weapon {
 
     private final int AMMO_CAPACITY;
     private int ammo = 0;
     private int damage;
     private float distance;
+    private float bulletSpeed;
 
-    public Weapon(int ammoCapacity, int damage, float distance) {
+    public Weapon(int ammoCapacity, int damage, float distance, float bulletSpeed) {
         AMMO_CAPACITY = ammoCapacity;
+
         this.damage = damage;
         this.distance = distance;
+        this.bulletSpeed = bulletSpeed;
+
+        reload();
     }
     
     protected abstract void makeShootNoise();
     protected abstract void makeOutOfAmmoNoise();
     protected abstract void makeReloadNoise();
 
-    public final void shoot() {
+    public final boolean shoot() {
         if (ammo == 0) {
             makeOutOfAmmoNoise();
-        } else {
-            makeShootNoise();
-            --ammo;
+            return false;
         }
+
+        makeShootNoise();
+        --ammo;
+        return true;
     }
     
     public final void reload() {
@@ -52,6 +52,10 @@ public abstract class Weapon {
 
     public float getDistance() {
         return distance;
+    }
+
+    public float getBulletSpeed() {
+        return bulletSpeed;
     }
 
     @Override

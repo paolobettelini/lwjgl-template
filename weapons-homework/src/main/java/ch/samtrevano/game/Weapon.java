@@ -3,8 +3,7 @@ package ch.samtrevano.game;
 /**
  * Weapon class - represents a weapon
  * 
- * @author Paolo Bettelini
- * @author Alessandro Aloise
+ * @author Paolo samtrevano
  * @version 12.10.2021
  */
 public abstract class Weapon {

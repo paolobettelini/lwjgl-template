@@ -1,18 +1,20 @@
 package ch.samtrevano.game;
 
-import static org.lwjgl.glfw.Callbacks.*;
-import static org.lwjgl.glfw.GLFW.*;
-import static org.lwjgl.opengl.GL40.*;
+import static org.lwjgl.opengl.GL11.GL_POLYGON;
+import static org.lwjgl.opengl.GL11.glBegin;
+import static org.lwjgl.opengl.GL11.glColor3b;
+import static org.lwjgl.opengl.GL11.glEnd;
+import static org.lwjgl.opengl.GL11.glVertex2f;
 
 import java.util.LinkedList;
 import java.util.List;
 
+import ch.samtrevano.game.weapons.WeaponLevel1;
+import ch.samtrevano.game.weapons.WeaponLevel2;
+import ch.samtrevano.game.weapons.WeaponLevel3;
 import ch.samtrevano.glfw.Window;
 
 public class Game extends Window {
-
-    private Player player;
-    private List<Bullet> bullets;
 
     private static final float[] LEVEL_0_VERTICES = {
         0.15f, 0.2f,
@@ -46,24 +48,45 @@ public class Game extends Window {
         -0.15f, -0.2f,
         -0.15f, 0.2f
     };
-
+    
     private static final float[] BULLET_VERTICES = {
-        0
+        -0.02f, -0.02f,
+        -0.02f, 0.02f,
+        0.02f, 0.02f,
+        0.02f, -0.02f
     };
+
+    private Player player;
+    private List<Bullet> bullets;
+
+    private boolean movingUp, movingDown, movingLeft, movingRight;
+
+    private float[] currentVertices = LEVEL_0_VERTICES;
 
     public Game(String title, int width, int height) throws IllegalStateException {
         super(title, width, height);
         
         this.bullets = new LinkedList<>();
         this.player = new Player();
+        movingUp = movingDown = movingLeft = movingRight = false;
+
+        player.addWeapon(new WeaponLevel1());
+        player.addWeapon(new WeaponLevel2());
+        player.addWeapon(new WeaponLevel3());
 
         start();
     }
 
     @Override
     protected void onMouseClick(int button, int action) {
-        player.shoot();
+        if (action != 1) { // Use glfw variable
+            return;
+        }
 
+        if (!player.shoot()) {
+            return;
+        }
+        
         Weapon weapon = player.getCurrentWeapon();
 
         if (weapon == null) { // No weapon to shoot with
@@ -74,34 +97,56 @@ public class Game extends Window {
         float rot = (float) Math.atan2(getMouseX() - (getWidth() >> 1),
                 getMouseY() - (getHeight() >> 1));
 
+        rot -= Math.PI / 2.0;
+
         bullets.add(new Bullet(
             player.getX(),
             player.getY(),
             (float) Math.cos(rot),
             (float) Math.sin(rot),
-            0.1f,
+            weapon.getBulletSpeed(),
             weapon.getDistance(),
             weapon.getDamage())
         );
     }
 
     @Override
-    protected void onKeyDown(int key) {
+    protected void onKeyDown(int key, int action) {
+        if (action == 2) {
+            return;
+        }
+
         switch (key) {
-            case 87: // w
-                player.moveUp(0.1f);
+            case 'W':
+                movingUp = !movingUp;
                 break;
-            case 65: // a
-                player.moveLeft(0.1f);
+            case 'A':
+                movingLeft = !movingLeft;
                 break;
-            case 83: // s
-                player.moveDown(0.1f);
+            case 'S':
+                movingDown = !movingDown;
                 break;
-            case 68: // d
-                player.moveLeft(0.1f);
+            case 'D':
+                movingRight = !movingRight;
+                break;
+            case 'R':
+                if (action == 1) {
+                    player.reloadWeapon();
+                }
+                break;
+            case 'F':
+                if (action == 1) { // Use glfw variable
+                    player.changeWeapon();
+                    player.setLevel((player.getLevel() + 1) % 3);
+
+                    currentVertices = switch(player.getLevel()) {
+                        case 0 -> LEVEL_0_VERTICES;
+                        case 1 -> LEVEL_1_VERTICES;
+                        default -> LEVEL_2_VERTICES;
+                    };
+                }
                 break;
             default:
-                System.out.println(key);
                 break;
         }
     }
@@ -112,36 +157,49 @@ public class Game extends Window {
         player.setRotation(rot);
     }
 
+    private List<Bullet> bulletsToRemove = new LinkedList<>();
+    
     @Override
     protected void draw() {
+        // Process movement
+        if (movingUp) {
+            player.moveUp(0.025f);
+        }
+
+        if (movingDown) {
+            player.moveDown(0.025f);
+        }
+
+        if (movingLeft) {
+            player.moveLeft(0.025f);
+        }
+
+        if (movingRight) {
+            player.moveRight(0.025f);
+        }
+        
         // Process bullets
-        List<Bullet> toRemove = new LinkedList<>();
         for (Bullet bullet : bullets) {
             if (!bullet.step()) {
-                toRemove.add(bullet);
+                bulletsToRemove.add(bullet);
                 continue;
             }
 
-            // if collision
-
-            drawVertices(BULLET_VERTICES, 0);////
+            glColor3b((byte) 66, (byte) 0, (byte) 22);
+            drawVertices(BULLET_VERTICES, player.getRotation(), bullet.getX() - player.getX(), bullet.getY() - player.getY());
         }
 
-        for (Bullet bullet : toRemove) {
+        for (Bullet bullet : bulletsToRemove) {
             bullets.remove(bullet);
         }
 
+        if (bulletsToRemove.size() != 0) {
+            bulletsToRemove.clear();
+        }
+
         // draw player
-        float[] vertices = switch(player.getLevel()) {
-            case 0 -> LEVEL_0_VERTICES;
-            case 1 -> LEVEL_1_VERTICES;
-            default -> LEVEL_2_VERTICES;
-        };
-
         glColor3b((byte) 127, (byte) 55, (byte) 0);
-        
-        drawVertices(vertices, player.getRotation());
-
+        drawVertices(currentVertices, player.getRotation());
     }
 
     private static void drawVertices(float[] vertices, float rotation) {

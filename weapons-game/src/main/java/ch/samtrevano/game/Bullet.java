@@ -17,6 +17,7 @@ public class Bullet {
         this.xIncrement = dirX * velocity;
         this.yIncrement = dirY * velocity;
         this.stepLength = (float) Math.sqrt(xIncrement * xIncrement + yIncrement * yIncrement);
+        this.maxDist = maxDist;
         this.steps = 0;
     }
 
@@ -36,7 +37,7 @@ public class Bullet {
         posX += xIncrement;
         posY += yIncrement;
 
-        return ++steps * stepLength > maxDist;
+        return ++steps * stepLength < maxDist;
     }
 
 }
