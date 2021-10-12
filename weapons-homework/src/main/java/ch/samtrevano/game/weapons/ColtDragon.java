@@ -1,4 +1,5 @@
-package ch.samtrevano.game;
+package ch.samtrevano.game.weapons;
+
 
 /**
  * Class representing a coltDragon which is a specialization of a revolver

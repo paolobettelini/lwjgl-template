@@ -1,4 +1,6 @@
-package ch.samtrevano.game;
+package ch.samtrevano.game.weapons;
+
+import ch.samtrevano.game.Weapon;
 
 /**
  * Class representing a slingshot. 
