@@ -1,9 +1,13 @@
-# Compile with Gradle:
+# LWJGL
 
-    + On UNIX
+This repository contains a template for setting up a window using LWJGL.
+
+1. Compile with Gradle
+
+   + On UNIX
     ```shell
-    chmod +x gradlew
-    ./gradlew build
+        chmod +x gradlew
+        ./gradlew build
     ```
 
     + On Windows
@@ -16,10 +20,10 @@
     gradle build
     ```
 
-# Run program
-```shell
-java -jar weapons-game/build/libs/weapons-<version>.jar
-```
+2. Run program
+  ```shell
+  java -jar weapons-game/build/libs/weapons-<version>.jar
+  ```
 
   + On macOS
   ```shell
