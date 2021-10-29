@@ -1,12 +1,4 @@
-# weapons
-
-## Setup
-1. Clone the repository
-  ```shell
-  git clone https://github.com/PaoloBettelini/weapons/
-  ```
-
-2. Compile with Gradle:
+# Compile with Gradle:
 
     + On UNIX
     ```shell
@@ -24,7 +16,7 @@
     gradle build
     ```
 
-3. Run program
+# Run program
 ```shell
 java -jar weapons-game/build/libs/weapons-<version>.jar
 ```

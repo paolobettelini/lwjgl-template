@@ -1,4 +1,0 @@
-rootProject.name = 'weapons'
-
-include 'weapons-game'
-include 'weapons-homework'

@@ -1,8 +1,0 @@
-plugins {
-    id 'java'
-    id 'application'
-}
-
-application {
-    mainClass = 'ch.samtrevano.Main'
-}
