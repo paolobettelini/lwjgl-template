@@ -4,12 +4,12 @@ plugins {
 }
 
 application {
-    mainClass = 'ch.samtrevano.Main'
+    mainClass = 'ch.bettelini.Main'
 }
 
 jar {
     manifest {
-        attributes 'Main-Class': 'ch.samtrevano.Main'
+        attributes 'Main-Class': 'ch.bettelini.Main'
     }
     from {
         duplicatesStrategy DuplicatesStrategy.EXCLUDE
@@ -45,9 +45,9 @@ dependencies {
     implementation "org.lwjgl:lwjgl-stb:${project.lwjgl_version}"
 }
 
-group = 'ch.samtrevano'
+group = 'ch.bettelini'
 version = '1.0-SNAPSHOT'
-description = 'Weapons'
+description = 'template'
 sourceCompatibility = '1.16'
 targetCompatibility = '1.16'
 
